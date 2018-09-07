@@ -38,6 +38,7 @@ function numToWordsThreeDigit(input) {
 
 
 function convert(n){
+	if (isNaN(n) || (n < 0) || n>999999999) return 'Please provide a number between 0 and 999999999.'
 	let mlln = Math.round(Math.floor(n/1000000));
 	
 	let thsd = Math.round(Math.floor(n % 1000000/1000)); 
@@ -46,8 +47,9 @@ function convert(n){
 	let m = mlln? numToWordsThreeDigit(mlln) + ' million, ' : '';
 	let t = thsd? numToWordsThreeDigit(thsd) + ' thousand, ' : '';
 	let h = hdrd? numToWordsThreeDigit(hdrd) : '';
+	
 	let w = m + t + h;
-
+	
 	if (w.endsWith(', ')){
 		w = w.substr(0, w.length-2);
 	}
@@ -55,6 +57,8 @@ function convert(n){
 	if (w.includes(',') && !w.includes(' and')) {
 		w = w.replace(',' , ' and');
 	}
+
+	if (w=='' && n===0) w='zero';
 
 	return w;
 }

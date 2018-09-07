@@ -4,6 +4,14 @@ test('convert 990999999 to words', () => {
     expect(convert(990999999)).toBe('nine hundred and ninety million, nine hundred and ninety nine thousand, nine hundred and ninety nine');
 });
 
+test('convert 0 to words', () => {
+    expect(convert(0)).toBe('zero');
+});
+
+test('convert abc to words', () => {
+    expect(convert('abc')).toBe('Please provide a number between 0 and 999999999.');
+});
+
 test('convert 2 to words', () => {
     expect(convert(2)).toBe('two');
 });
