@@ -1,0 +1,22 @@
+{
+  "name": "numtowords",
+  "version": "1.0.0",
+  "description": "",
+  "main": "n.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuangyanGuo/numToWords.git"
+  },
+  "author": "Guangyan Guo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuangyanGuo/numToWords/issues"
+  },
+  "homepage": "https://github.com/GuangyanGuo/numToWords#readme",
+  "devDependencies": {
+    "jest": "^23.5.0"
+  }
+}
