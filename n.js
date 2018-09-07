@@ -1,65 +1,63 @@
 var unit_arr = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-var teens_arr =['eleven', 'twelve', 'thirteen', 'fourteen', 'fiftween', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-var tens_arr = ['ten','twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+var teens_arr =['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+var tens_arr = ['ten','twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
 const getUnit = ( n ) => unit_arr[ n ];
 const getTeens = ( n ) => teens_arr[ n ];
 const getTens = ( n ) => tens_arr[ n ];
 
-function numToWordsThreeDigit(input){
-	if (input < 11) {
-		return getUnit(input - 1);
-	}else if (input < 21){
-		return getTeens(input - 11);
-	}else if (input < 100){
-		let ten = String(input).substr(0,1);
-		let unit = String(input).substr(1, 1);
-		return getTens(Number(ten) -1) + ' ' +  getUnit(unit - 1);
-	}else {
-		let hundred = String(input).substr(0, 1);
-		let ten = String(input).substr(1, 2);
-		let unit = String(input).substr(2, 1);
-		if (Number(ten) <= 10) {
-			
-			if (Number(unit) !== 0) {
-				return getUnit(Number(hundred) - 1) + ' hundred and ' + getUnit(unit -1);
-			} else {
-				
-				return getUnit(Number(hundred) - 1) + ' hundred and ' + getTens(0);
-			}
-		}else if (Number(ten) >10 && Number(ten) < 20) {
-			return getUnit(Number(hundred) - 1) + ' hundred and ' + getTeens(Number(ten) -11) ;
-		}else if (Number(ten) >=20) {
-			if (Number(unit) !== 0){console.log('unit', unit);
-				return getUnit(Number(hundred) - 1) + ' hundred and ' + getTens(Math.round(Math.floor(Number(ten)/10)) -1) + ' ' + getUnit(unit -1);
-			}else{
-				return getUnit(Number(hundred) - 1) + ' hundred and ' + getTens(Math.round(Math.floor(Number(ten)/10)) -1);
-			}
+function numToWordsThreeDigit(input) {
+	
+		let hundred = Math.round(Math.floor(input/100));
+		let ten = Math.round(Math.floor(input % 100/10)); 
+		let unit = input % 10;
+	
+		let u='';
+		let t = '';
+		let h= hundred? getUnit(hundred - 1) + ' hundred ': '';
+		
+		if (ten ===0 && unit ===0){
+			t = '';
+			u = '';
+		} else if (ten ===0 && unit !==0){
+			t = '';
+			u = (ten||hundred)? 'and ' + getUnit(unit -1) : getUnit(unit -1);
+		} else if (ten===1 && unit !==0) {
+			t = (h!=='') ? 'and ' + getTeens( unit - 1) : getTeens( unit - 1);
+		}else if (ten===1 && unit ===0) {
+			t = (h!=='') ? 'and ' + getTens( ten - 1 ) : getTens( ten - 1 );
+		} else if ( ten > 1) {
+			t = (h!=='') ? 'and ' + getTens(ten - 1) : getTens(ten - 1)  ;
+			u = unit? ' ' + getUnit(unit - 1) : '';
 		}
-	}
+		let word = (h + t + u).trim(); 
+		return word;
+	
 }
 
-console.log(numToWordsThreeDigit(2));
-console.log(numToWordsThreeDigit(12));
-console.log(numToWordsThreeDigit(22));
-console.log(numToWordsThreeDigit(202));
-console.log(numToWordsThreeDigit(210));
-console.log(numToWordsThreeDigit(212));
-console.log(numToWordsThreeDigit(220));
-console.log(numToWordsThreeDigit(222));
-console.log(numToWordsThreeDigit(232));
-console.log(numToWordsThreeDigit(992));
+
 
 function convert(n){
 	let mlln = Math.round(Math.floor(n/1000000));
-	console.log('mlln ', mlln);
+	
 	let thsd = Math.round(Math.floor(n % 1000000/1000)); 
 	let hdrd = n % 1000;
-	console.log('hdrd', hdrd);
-	return numToWordsThreeDigit(mlln) + ' million ' + numToWordsThreeDigit(thsd) + ' thousand ' + numToWordsThreeDigit(hdrd);
+	
+	let m = mlln? numToWordsThreeDigit(mlln) + ' million, ' : '';
+	let t = thsd? numToWordsThreeDigit(thsd) + ' thousand, ' : '';
+	let h = hdrd? numToWordsThreeDigit(hdrd) : '';
+	let w = m + t + h;
+
+	if (w.endsWith(', ')){
+		w = w.substr(0, w.length-2);
+	}
+
+	if (w.includes(',') && !w.includes(' and')) {
+		w = w.replace(',' , ' and');
+	}
+
+	return w;
 }
 
-console.log(convert(239));
-console.log(convert(999999999));
 
 module.exports = convert;
